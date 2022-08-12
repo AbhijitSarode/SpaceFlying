@@ -1,6 +1,7 @@
 # SpaceFlying
 ![Space Flight][P]
-### Experience space travelling right from your computer
+
+Experience space travelling right from your computer
 
 This is an experimental project to explore webGL technology using [ThreeJS](https://threejs.org/) library
 
@@ -16,6 +17,5 @@ This is an experimental project to explore webGL technology using [ThreeJS](http
 * Creating `scene`, `camera`  & `rendering` it onto a canvas
 * Using `textureLoader`, `Geometry`, `Points` & `PointsMaterial` to create stars
 * Transforming goemetries
-
 
 [P]: /demo.gif
