@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset=UTF-8 />
+    <link rel="stylesheet" type="text/css" href="style.css" />
+    <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet"> 
+    <title>Space Flight</title>
+
+    <!-- Primary Meta Tags -->
+    <meta name="author" content="Abhijit Sarode">
+    <!-- <meta name="title" content="GitHub - AbhijitSarode/SpaceFlying: Experience space travelling right from your computer"> -->
+    <meta name="description" content="A Space flying experience created using ThreeJs . ">
+
+    <!-- Socials -->
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://github.com/AbhijitSarode/SpaceFlying">
+    <meta property="og:title" content="GitHub - AbhijitSarode/SpaceFlying: Experience space travelling right from your computer">
+    <meta property="og:description" content="A Space flying experience created using ThreeJs . ">
+    <meta property="og:image" content="https://opengraph.githubassets.com/69c320b3b41a9a37dc915e5ce5b8bb9add2094522ae54ed0224febf38dc0deb1/AbhijitSarode/SpaceFlying">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://github.com/AbhijitSarode/SpaceFlying">
+    <meta property="twitter:title" content="GitHub - AbhijitSarode/SpaceFlying: Experience space travelling right from your computer">
+    <meta property="twitter:description" content="A Space flying experience created using ThreeJs . ">
+    <meta property="twitter:image" content="https://opengraph.githubassets.com/69c320b3b41a9a37dc915e5ce5b8bb9add2094522ae54ed0224febf38dc0deb1/AbhijitSarode/SpaceFlying">
+
+    <!-- Mobile meta -->
+
+    <!-- iOS -->
+    <meta name="apple-mobile-web-app-title" content="Space Flying">
+    <meta name="apple-mobile-web-app-capable" content="yes"> <!-- Full Screen  but risky interms of UX--> 
+    <meta name="apple-mobile-web-app-status-bar-style" content="black"> <!-- Status bar theme -->
+
+    <!-- Android -->
+    <meta name="mobile-web-app-capable" content="yes"> <!-- Full Screen -->
+    <meta name="theme-color" content="black"> <!-- Status bar theme -->
+
+
+
+
+  </head>
+
+  <body>
+    <div class="text-box">
+      <div class="heading">To infinity and Beyond</div>
+      <div class="button-wrapper">
+          <div class="button">Lets Fly</div>
+      </div>
+    </div>
+
+    <script src="three.min.js"></script>
+    <script>
+    let scene, camera, renderer, stars, starGeo;
+
+    function init() {
+
+      // Scene
+      scene = new THREE.Scene();
+
+      // Camera
+      camera = new THREE.PerspectiveCamera(60,window.innerWidth / window.innerHeight, 1, 1000);
+      camera.position.z = 1;
+      camera.rotation.x = Math.PI/2;
+
+      // Renderer
+      renderer = new THREE.WebGLRenderer();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      document.body.appendChild(renderer.domElement);
+
+      starGeo = new THREE.Geometry();
+      
+      // Creating random stars
+      for(let i=0;i<6000;i++) {
+        star = new THREE.Vector3( // Creating random co-ordinates
+          Math.random() * 600 - 300,
+          Math.random() * 600 - 300,
+          Math.random() * 600 - 300
+        );
+        // Assigning properties to the co-ordinates
+        star.velocity = 0;
+        star.acceleration = 0.02;
+        starGeo.vertices.push(star);
+      }
+
+      // Texture
+      let sprite = new THREE.TextureLoader().load( 'star.png' );
+      
+      // Points
+      let starMaterial = new THREE.PointsMaterial({
+        // Assigning properties to Points
+        color: 0xaaaaaa,
+        size: 0.7,
+        map: sprite
+      });
+
+
+      // Assigning geometry and material to points
+      stars = new THREE.Points(starGeo,starMaterial);
+      scene.add(stars);
+
+      // Detect resize
+      window.addEventListener("resize", onWindowResize, false);
+      
+      animate(); 
+    }
+    
+    // Making it responsive on reize
+    function onWindowResize() {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+      }
+    
+      function animate() {
+      // Create filght animation
+      starGeo.vertices.forEach(p => {
+        p.velocity += p.acceleration
+        p.y -= p.velocity;
+        
+        if (p.y < -200) {
+          p.y = 200;
+          p.velocity = 0;
+        }
+      });
+
+      starGeo.verticesNeedUpdate = true;
+      stars.rotation.y +=0.002;
+    
+      renderer.render(scene, camera);
+      requestAnimationFrame(animate);
+    }
+    init();
+    
+    </script>
+  </body>
+</html>
